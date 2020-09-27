@@ -1,0 +1,38 @@
+```{r}
+link="https://en.wikipedia.org/wiki/Importance_of_religion_by_country#cite_note-gallup-religiosity-poor-nations-1"
+path='//*[@id="mw-content-text"]/div[1]/table'
+
+relig=htmltab(doc = link, 
+              which = path, #herramientas de desarrollador
+              encoding = "UTF-8")
+View(relig)
+```
+
+
+```{r}
+names(relig)
+```
+```{r}
+names(relig)[names(relig)=="Yes, important"]="religiosidad" 
+names(relig)[names(relig)=="No, unimportant"]="irreligiosidad" 
+```
+
+```{r}
+relig$religiosidad=str_split(relig$religiosidad,pattern = '%',simplify = T)[,1]
+relig$irreligiosidad=str_split(relig$irreligiosidad,pattern = '%',simplify = T)[,1]
+
+```
+
+```{r}
+relig$religiosidad=(relig$religiosidad)/(100) 
+relig$irreligiosidad=(relig$irreligiosidad)/(100) 
+```
+
+```{r}
+str(relig)
+```
+
+
+```{r}
+relig[,-c(1)]=lapply(relig[,-c(1)], as.numeric) 
+```
